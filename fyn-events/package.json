@@ -1,0 +1,9 @@
+{
+  "name": "fyn-events",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Find Your North — River Tech events board",
+  "scripts": {
+    "start": "node server.js"
+  }
+}

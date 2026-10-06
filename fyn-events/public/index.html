@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Find Your North — Local Events</title>
+    <meta
+      name="description"
+      content="River Tech and North Idaho events in one place. See what's next, when it is, and where to go."
+    />
+    <meta property="og:title" content="Find Your North — Local Events" />
+    <meta
+      property="og:description"
+      content="High school and local events around Post Falls and Coeur d'Alene."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@400;500;600&family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="edit-banner hidden" id="editBanner">
+      <span>Editing live. Changes save when you leave or visit this page.</span>
+      <button type="button" id="addEventBtn">Add event</button>
+      <button type="button" id="syncBtn">Sync calendars</button>
+      <button type="button" id="siteSettingsBtn">Site copy</button>
+      <button type="button" id="editHsBtn">Edit HS schedule</button>
+      <button type="button" id="saveBtn" class="primary">Save</button>
+      <button type="button" id="doneEditBtn">Done</button>
+    </div>
+
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Find Your North">
+        <span class="brand-mark" id="brandShort">FYN</span>
+        <span class="brand-name" id="brandName">FIND YOUR NORTH</span>
+      </a>
+      <a class="header-link" id="navLink" href="https://www.rivertechschool.com/">
+        <span class="header-arrow" aria-hidden="true"></span>
+        <span id="navLabel">BACK TO MAIN STORE</span>
+      </a>
+    </header>
+
+    <section class="hero" id="hero">
+      <div class="hero-copy">
+        <p class="hero-kicker" id="heroKicker">YOUR ENTERTAINMENT</p>
+        <h1 class="hero-title" id="heroTitle">LOCAL EVENTS<br />IN ONE PLACE.</h1>
+      </div>
+    </section>
+
+    <main class="board">
+      <div class="toolbar">
+        <p class="count" id="eventCount">0 EVENTS</p>
+        <div class="toolbar-center">
+          <h2 class="quarter-label" id="quarterLabel">1st Quarter</h2>
+          <p class="eyebrow" id="sectionEyebrow">HIGH SCHOOL SPECIFIC</p>
+        </div>
+        <nav class="filters" id="filters" aria-label="Event filters"></nav>
+      </div>
+
+      <article class="next-panel" id="nextPanel" hidden>
+        <div class="next-panel-kicker">
+          <span>Up next</span>
+          <span id="nextCountdown"></span>
+        </div>
+        <h2 id="nextTitle"></h2>
+        <dl class="next-meta">
+          <div>
+            <dt>When</dt>
+            <dd id="nextWhen"></dd>
+          </div>
+          <div>
+            <dt>Where</dt>
+            <dd id="nextWhere"></dd>
+          </div>
+          <div>
+            <dt>What</dt>
+            <dd id="nextWhat"></dd>
+          </div>
+        </dl>
+      </article>
+
+      <section class="hs-section" id="hsSection" hidden>
+        <div class="toolbar hs-toolbar">
+          <p class="count">WEEKLY</p>
+          <div class="toolbar-center">
+            <h2 class="quarter-label" id="hsTitle">High School</h2>
+            <p class="eyebrow" id="hsEyebrow">9TH–12TH · LIKE THE SCHOOL CALENDAR</p>
+          </div>
+          <p class="hs-updated" id="hsUpdated"></p>
+        </div>
+        <div class="hs-table-wrap" id="hsTable"></div>
+      </section>
+
+      <div class="sync-note" id="syncNote"></div>
+      <div class="grid" id="grid"></div>
+    </main>
+
+    <footer class="site-footer">
+      <p id="footerNote">River Tech Christian School · Post Falls, ID</p>
+      <div class="footer-actions">
+        <a class="ghost" id="downloadLink" href="/download">Download HTML</a>
+        <button type="button" class="ghost" id="downloadBtn">Save page</button>
+        <button type="button" class="ghost" id="editToggle">Edit site</button>
+      </div>
+    </footer>
+
+    <dialog id="pinDialog">
+      <form method="dialog" id="pinForm">
+        <p class="dialog-kicker">Editor access</p>
+        <h3>Enter the edit pin</h3>
+        <input type="password" id="pinInput" autocomplete="off" placeholder="Pin" />
+        <p class="hint">Staff only. Your edits save automatically when you leave or come back.</p>
+        <div class="dialog-actions">
+          <button value="cancel">Cancel</button>
+          <button class="primary" id="pinSubmit" value="default">Open editor</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="eventDialog">
+      <form id="eventForm">
+        <p class="dialog-kicker" id="eventDialogKicker">Event</p>
+        <h3 id="eventDialogTitle">Edit event</h3>
+        <div class="form-grid">
+          <label>Display title<input name="displayTitle" required /></label>
+          <label>Full title<input name="title" required /></label>
+          <label>Code<input name="code" maxlength="4" /></label>
+          <label>Date<input name="date" type="date" required /></label>
+          <label>End date<input name="endDate" type="date" /></label>
+          <label>Time<input name="time" placeholder="6:30 PM" /></label>
+          <label class="wide">Location<input name="location" /></label>
+          <label class="wide">Notes<input name="notes" /></label>
+          <label>
+            Type
+            <select name="type">
+              <option value="fieldtrip">Field trip</option>
+              <option value="performance">Performance</option>
+              <option value="event">Event</option>
+              <option value="no-school">No school</option>
+              <option value="quarter">Quarter marker</option>
+            </select>
+          </label>
+          <label>
+            Category
+            <select name="category">
+              <option value="river-tech">River Tech</option>
+              <option value="high-school">High School</option>
+              <option value="local">Local</option>
+              <option value="private">Private</option>
+            </select>
+          </label>
+          <label>
+            Color
+            <select name="color">
+              <option value="terracotta">Terracotta</option>
+              <option value="gold">Gold</option>
+              <option value="olive">Olive</option>
+              <option value="ink">Ink</option>
+              <option value="paper">Paper</option>
+            </select>
+          </label>
+          <label class="check"><input type="checkbox" name="optional" /> Optional</label>
+          <label class="check"><input type="checkbox" name="highSchool" /> High school specific</label>
+          <label class="check"><input type="checkbox" name="visible" /> Visible</label>
+          <label class="check"><input type="checkbox" name="isDivider" /> Quarter divider</label>
+        </div>
+        <div class="incoming" id="incomingBox" hidden></div>
+        <div class="dialog-actions">
+          <button type="button" id="deleteEventBtn">Delete</button>
+          <span class="grow"></span>
+          <button type="button" id="cancelEventBtn">Cancel</button>
+          <button class="primary" type="submit">Save event</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="siteDialog">
+      <form id="siteForm">
+        <p class="dialog-kicker">Site copy</p>
+        <h3>Edit the page</h3>
+        <div class="form-grid">
+          <label>Brand short<input name="brandShort" /></label>
+          <label>Brand name<input name="brand" /></label>
+          <label>Nav label<input name="navLabel" /></label>
+          <label>Nav link<input name="navHref" /></label>
+          <label>Hero kicker<input name="heroKicker" /></label>
+          <label class="wide">Hero title<textarea name="heroTitle" rows="2"></textarea></label>
+          <label class="wide">Hero image URL<input name="heroImage" /></label>
+          <label>Quarter label<input name="quarterLabel" /></label>
+          <label>Eyebrow<input name="sectionEyebrow" /></label>
+          <label>HS schedule title<input name="hsTitle" /></label>
+          <label>HS eyebrow<input name="hsEyebrow" /></label>
+          <label>Footer<input name="footerNote" /></label>
+          <label>New edit pin<input name="editPin" placeholder="Leave blank to keep" /></label>
+        </div>
+        <div class="dialog-actions">
+          <button type="button" id="cancelSiteBtn">Cancel</button>
+          <button class="primary" type="submit">Update copy</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="hsDialog">
+      <form id="hsForm">
+        <p class="dialog-kicker">High school</p>
+        <h3>Weekly schedule</h3>
+        <p class="hint">One class per line in each day. Use | to split stacked classes.</p>
+        <label class="wide-block">Updated line<input id="hsUpdatedInput" /></label>
+        <div id="hsEditor"></div>
+        <div class="dialog-actions">
+          <button type="button" id="cancelHsBtn">Cancel</button>
+          <button class="primary" type="submit">Update schedule</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
